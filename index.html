@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Society Check-In</title>
+  <link rel="icon" type="image/png" href="SocietyLogo.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #1a1a1a;
+      border: 3px solid #800000;
+      border-radius: 20px;
+      padding: 1.5rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    h2 {
+      text-align: center;
+      color: #FFD700;
+      margin-bottom: 1rem;
+    }
+
+    .header-img {
+      display: block;
+      max-width: 200px;
+      height: auto;
+      margin: 0 auto 1.5rem auto;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+
+    .verse {
+      font-style: italic;
+      font-size: 0.95rem;
+      text-align: center;
+      background: #FFD700;
+      color: #000;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input, textarea {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid #444;
+      font-size: 1rem;
+      background-color: #fff;
+      color: #000;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .rating-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .rating-group button {
+      flex: 1;
+      margin: 0 2px;
+      padding: 0.6rem;
+      background-color: #800000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .rating-group button.selected {
+      background-color: #FFD700;
+      color: #000;
+    }
+
+    .description {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      text-align: center;
+      color: #ccc;
+    }
+
+    button[type="submit"] {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background-color: #FFD700;
+      color: #000;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    #status-msg {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: bold;
+      color: #FFD700;
+    }
+
+    .footer-credit {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 480px) {
+      .rating-group button {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Society Check-In</h2>
+    <img src="SocietyLogo.png" class="header-img" alt="Society Logo"/>
+    <div class="verse" id="daily-verse">Loading verse...</div>
+
+    <form id="checkin-form">
+      <label for="user_name">Name</label>
+      <input type="text" name="user_name" id="user_name" required/>
+
+      <label for="user_email">Email</label>
+      <input type="email" name="user_email" id="user_email" required/>
+
+      <label>Mental</label>
+      <div class="rating-group" data-category="mental">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
+      <div class="description">1 = Struggling • 5 = Clear and focused</div>
+      <input type="hidden" name="mental" required/>
+
+      <label>Physical</label>
+      <div class="rating-group" data-category="physical">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
+      <div class="description">1 = Exhausted • 5 = Energized</div>
+      <input type="hidden" name="physical" required/>
+
+      <label>Emotional</label>
+      <div class="rating-group" data-category="emotional">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
+      <div class="description">1 = Overwhelmed • 5 = Peaceful</div>
+      <input type="hidden" name="emotional" required/>
+
+      <label for="message">Anything you'd like to share?</label>
+      <textarea name="message" id="message" rows="4" placeholder="Your thoughts..."></textarea>
+
+      <label for="prayer">Prayer Request</label>
+      <textarea name="prayer" id="prayer" rows="4" placeholder="Speak your mind..."></textarea>
+
+      <button type="submit">Submit Check-In</button>
+    </form>
+
+    <div id="status-msg"></div>
+    <div class="footer-credit">Created by Brother Chaplain David Mack</div>
+  </div>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    (function () {
+      emailjs.init({ publicKey: "DebByyEvbEcpIy3uH" });
+    })();
+
+    document.getElementById("checkin-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      emailjs.sendForm("service_7rff9rk", "template_huj9cx8", this)
+        .then(() => {
+          alert("Big thank you from Brother Chaplain David Mack!");
+          window.close();
+        }, (error) => {
+          document.getElementById("status-msg").innerText = "Submission failed. Try again.";
+          console.error("EmailJS Error:", error);
+        });
+    });
+
+    document.querySelectorAll(".rating-group").forEach(group => {
+      const category = group.dataset.category;
+      const hiddenInput = document.querySelector(`input[name="${category}"]`);
+      group.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          hiddenInput.value = btn.dataset.value;
+        });
+      });
+    });
+
+    const verses = [
+      "Isaiah 41:10 – Fear not, for I am with you.",
+      "Philippians 4:13 – I can do all things through Christ who strengthens me.",
+      "Psalm 46:1 – God is our refuge and strength, an ever-present help in trouble.",
+      "Matthew 11:28 – Come to me, all who are weary, and I will give you rest.",
+      "Romans 8:28 – All things work together for good for those who love God.",
+      "Proverbs 3:5 – Trust in the Lord with all your heart.",
+      "Joshua 1:9 – Be strong and courageous. Do not be afraid."
+    ];
+    const todayIndex = new Date().getDate() % verses.length;
+    document.getElementById("daily-verse").innerText = verses[todayIndex];
+  </script>
+</body>
+</html>
